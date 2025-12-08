@@ -1,0 +1,80 @@
+.modal-tech-content {
+  padding: 5px;
+}
+
+.modal-tech-info {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-xl);
+}
+
+.modal-tech-meta {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: var(--spacing-lg);
+  background-color: #f8f9fa;
+  border-radius: var(--border-radius-md);
+  border-left: 4px solid var(--info-color);
+}
+
+.modal-tech-category {
+  background-color: var(--info-light);
+  color: var(--info-dark);
+  padding: var(--spacing-xs) var(--spacing-md);
+  border-radius: 20px;
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.modal-tech-description {
+  margin: 0;
+  padding: var(--spacing-lg);
+  background-color: #f9f9f9;
+  border-radius: var(--border-radius-md);
+  line-height: 1.6;
+  color: var(--text-secondary);
+}
+
+.modal-status-selector {
+  padding: var(--spacing-xl);
+  background-color: #f0f4ff;
+  border-radius: var(--border-radius-lg);
+}
+
+.modal-status-selector h4 {
+  margin: 0 0 var(--spacing-lg) 0;
+  color: var(--text-primary);
+  font-size: 16px;
+}
+
+.modal-status-buttons {
+  display: flex;
+  gap: var(--spacing-sm);
+  flex-wrap: wrap;
+}
+
+.modal-notes-section {
+  margin-top: var(--spacing-md);
+}
+
+.modal-progress-section {
+  margin-top: var(--spacing-md);
+}
+
+.btn.modal-active {
+  border: 2px solid var(--text-light);
+  box-shadow: 0 0 0 2px #333;
+}
+
+@media (max-width: 768px) {
+  .modal-status-buttons {
+    flex-direction: column;
+  }
+  
+  .modal-tech-meta {
+    flex-direction: column;
+    gap: var(--spacing-sm);
+    align-items: flex-start;
+  }
+}

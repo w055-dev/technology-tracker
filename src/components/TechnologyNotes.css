@@ -1,0 +1,39 @@
+.notes-section {
+  margin-top: var(--spacing-lg);
+  padding: var(--spacing-lg);
+  background-color: #f8f9fa;
+  border-radius: var(--border-radius-md);
+  animation: slideDown var(--transition-normal);
+}
+
+.notes-section h4 {
+  margin: 0 0 var(--spacing-sm) 0;
+  color: #495057;
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.notes-section textarea {
+  width: 100%;
+  padding: var(--spacing-sm);
+  border: 1px solid #dee2e6;
+  border-radius: var(--border-radius-sm);
+  font-size: 14px;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  resize: vertical;
+  min-height: 60px;
+  transition: border-color var(--transition-normal);
+}
+
+.notes-section textarea:focus {
+  outline: none;
+  border-color: var(--info-color);
+  box-shadow: 0 0 0 2px rgba(33, 150, 243, 0.1);
+}
+
+.notes-hint {
+  margin-top: var(--spacing-sm);
+  font-size: 12px;
+  color: var(--gray-dark);
+  text-align: right;
+}
