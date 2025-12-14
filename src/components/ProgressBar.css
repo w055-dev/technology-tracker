@@ -35,3 +35,15 @@
 .progress-bar-inner.animated {
   animation: pulse 2s infinite;
 }
+
+[data-theme="dark"] .progress-bar-outer {
+  background-color: var(--bg-tertiary);
+}
+
+[data-theme="dark"] .progress-label {
+  color: var(--text-primary);
+}
+
+[data-theme="dark"] .progress-percentage {
+  color: var(--info-dark);
+}

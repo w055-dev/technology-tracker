@@ -41,13 +41,13 @@ function ProgressHeader({ technologies }) {
   const getProgressMessage = (percentage) => {
     switch (true) {
       case percentage === 100:
-        return { text: '🎉 Отлично!  Все технологии изучены! ', type: 'success' };
+        return { text: 'Отлично!  Все технологии изучены! ', type: 'success' };
       case percentage >= 66:
-        return { text: '👏 Хороший прогресс!  Еще немного... ', type: 'good' };
+        return { text: 'Хороший прогресс!  Еще немного... ', type: 'good' };
       case percentage >= 33:
-        return { text: '📚 Продолжайте обучение! ', type: 'medium' };
+        return { text: 'Продолжайте обучение! ', type: 'medium' };
       default:
-        return { text: '🚀 Рим не строился за один день!', type: 'start' };
+        return { text: 'Рим не строился за один день!', type: 'start' };
     }
   };
 

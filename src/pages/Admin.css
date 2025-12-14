@@ -1,0 +1,105 @@
+.admin-content {
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+.system-card,
+.report-card,
+.status-card {
+  background: var(--bg-card);
+  border-radius: var(--border-radius-lg);
+  padding: var(--spacing-xl);
+  margin-bottom: var(--spacing-lg);
+  box-shadow: var(--shadow-md);
+  border: 1px solid var(--border-color);
+}
+
+.system-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: var(--spacing-md);
+  margin-top: var(--spacing-lg);
+}
+
+.system-item {
+  display: flex;
+  flex-direction: column;
+  padding: var(--spacing-md);
+  background: var(--bg-secondary);
+  border-radius: var(--border-radius-md);
+}
+
+.system-label {
+  font-size: 13px;
+  color: var(--text-muted);
+  margin-bottom: var(--spacing-xs);
+}
+
+.system-value {
+  font-weight: 600;
+  color: var(--text-primary);
+  font-size: 16px;
+}
+
+.system-value.small {
+  font-size: 13px;
+  opacity: 0.8;
+}
+
+.report-description {
+  color: var(--text-secondary);
+  margin: var(--spacing-md) 0;
+  line-height: 1.6;
+}
+
+.report-actions {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-md);
+  align-items: flex-start;
+}
+
+.report-actions .btn {
+  padding: var(--spacing-lg) var(--spacing-xl);
+  font-size: 16px;
+}
+
+.status-items {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-md);
+  margin-top: var(--spacing-lg);
+}
+
+.status-item {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-md);
+  padding: var(--spacing-md);
+  border-radius: var(--border-radius-md);
+  background: var(--bg-secondary);
+}
+
+.status-item.success {
+  border-left: 4px solid var(--success-color);
+}
+
+.status-item.warning {
+  border-left: 4px solid var(--warning-color);
+}
+
+.status-icon {
+  width: 24px;
+  height: 24px;
+  background: var(--success-color);
+  color: white;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: bold;
+}
+
+.status-item.warning .status-icon {
+  background: var(--warning-color);
+}

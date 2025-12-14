@@ -3,7 +3,7 @@ import './ProgressBar.css';
 function ProgressBar({
   progress,
   label = '',
-  color = '#4CAF50',
+  color = 'var(--success-color)',
   height = 20,
   showPercentage = true,
   animated = false
@@ -25,7 +25,7 @@ function ProgressBar({
         className="progress-bar-outer"
         style={{
           height: `${height}px`,
-          backgroundColor: '#f0f0f0',
+          backgroundColor: 'var(--bg-tertiary)',
           borderRadius: `${height/2}px`,
           overflow: 'hidden'
         }}

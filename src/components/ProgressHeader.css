@@ -30,6 +30,7 @@
   text-transform: uppercase;
   letter-spacing: 1px;
   margin-bottom: var(--spacing-sm);
+  color: var(--text-primary);
 }
 
 .stat-value {

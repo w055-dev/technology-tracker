@@ -5,24 +5,35 @@ import TechnologyNotes from './TechnologyNotes';
 function TechnologyCard({ technologies, searchQuery = '', setSearchQuery, updateTechnologyNotes, onTechClick }) {
   const [activeFilter, setActiveFilter] = useState('all');
   const [expandedTechId, setExpandedTechId] = useState(null);
+  const [localSearchQuery, setLocalSearchQuery] = useState(searchQuery);
   
   const toggleNotes = (id, event) => {
     event.stopPropagation();
     setExpandedTechId(expandedTechId === id ? null : id);
   };
   
+  const handleSearchChange = (e) => {
+    const value = e.target.value;
+    setLocalSearchQuery(value);
+    // Использую setTimeout для debounce
+    clearTimeout(window.searchTimeout);
+    window.searchTimeout = setTimeout(() => {
+      if (typeof setSearchQuery === 'function') {
+        setSearchQuery(value);
+      }
+    }, 300);
+  };
+  
   const filteredTechnologies = technologies.filter(tech => {
     if (activeFilter !== 'all' && tech.status !== activeFilter){
       return false;
     }
-    
-    if (searchQuery.trim()) {
-      const query = searchQuery.toLowerCase();
+    if (localSearchQuery.trim()) {
+      const query = localSearchQuery.toLowerCase();
       return tech.title.toLowerCase().includes(query) ||
              tech.description.toLowerCase().includes(query) ||
              (tech.notes && tech.notes.toLowerCase().includes(query));
     }
-    
     return true;
   });
 
@@ -33,12 +44,16 @@ function TechnologyCard({ technologies, searchQuery = '', setSearchQuery, update
         <input
           type="text"
           placeholder="Поиск по названию, описанию или заметкам..."
-          value={searchQuery}
-          onChange={(e) => setSearchQuery(e.target.value)}
+          value={localSearchQuery}
+          onChange={handleSearchChange}
+          onKeyDown={(e) => {
+            if (e.key === 'Enter') {
+              e.preventDefault();
+            }
+          }}
         />
         <span className="search-count">Найдено: {filteredTechnologies.length}</span>
       </div>
-      
       <div className="filter-tabs">
         {['all', 'not-started', 'in-progress', 'completed'].map(filter => (
           <button
@@ -52,46 +67,49 @@ function TechnologyCard({ technologies, searchQuery = '', setSearchQuery, update
           </button>
         ))}
       </div>
-      
-      <ul>
-        {filteredTechnologies.map(tech => (
-          <li
-            key={tech.id}
-            data-tech-id={tech.id}
-            className={`tech-card ${tech.status} ${expandedTechId === tech.id ? 'expanded' : ''}`}
-            onClick={() => onTechClick(tech)}
-          >
-            <div className="tech-info">
-              <span className="tech-title">{tech.title}</span>
-              <span className="tech-description">{tech.description}</span>
-              
-              <div className="tech-meta">
-                <span className="tech-category">{tech.category}</span>
-                <button 
-                  className="notes-toggle-btn"
-                  onClick={(e) => toggleNotes(tech.id, e)}
-                  title={expandedTechId === tech.id ? "Скрыть заметки" : "Показать заметки"}
-                >
-                  {tech.notes ? '📝' : '📄'}
-                </button>
+      {filteredTechnologies.length === 0 ? (
+        <div className="empty-state">
+          <p>Технологии не найдены. Попробуйте изменить поисковый запрос.</p>
+        </div>
+      ) : (
+        <ul>
+          {filteredTechnologies.map(tech => (
+            <li
+              key={tech.id}
+              data-tech-id={tech.id}
+              className={`tech-card ${tech.status} ${expandedTechId === tech.id ? 'expanded' : ''}`}
+              onClick={() => onTechClick(tech)}
+            >
+              <div className="tech-info">
+                <span className="tech-title">{tech.title}</span>
+                <span className="tech-description">{tech.description}</span>
+                
+                <div className="tech-meta">
+                  <span className="tech-category">{tech.category}</span>
+                  <button 
+                    className="notes-toggle-btn"
+                    onClick={(e) => toggleNotes(tech.id, e)}
+                    title={expandedTechId === tech.id ? "Скрыть заметки" : "Показать заметки"}
+                  >
+                    {tech.notes ? '📝' : '📄'}
+                  </button>
+                </div>
+                {expandedTechId === tech.id && (
+                  <TechnologyNotes 
+                    techId={tech.id}
+                    notes={tech.notes}
+                    onNotesChange={updateTechnologyNotes}
+                  />
+                )}
               </div>
-              
-              {expandedTechId === tech.id && (
-                <TechnologyNotes 
-                  techId={tech.id}
-                  notes={tech.notes}
-                  onNotesChange={updateTechnologyNotes}
-                />
-              )}
-            </div>
-            
-            <div className="status-icon">
-              {tech.status === 'completed' ? '✅' : 
-               tech.status === 'in-progress' ? '⏳' : '📋'}
-            </div>
-          </li>
-        ))}
-      </ul>
+              <div className="status-icon">
+                {tech.status === 'completed' ? '✅' : 
+                 tech.status === 'in-progress' ? '⏳' : '📋'}
+              </div>
+            </li>
+          ))}
+        </ul>
+      )}
     </div>
   );
 }

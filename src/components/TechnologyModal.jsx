@@ -2,12 +2,18 @@ import './TechnologyModal.css';
 import Modal from './Modal';
 import ProgressBar from './ProgressBar';
 import TechnologyNotes from './TechnologyNotes';
+import { useState, useEffect } from 'react';
 
-function TechnologyModal({ isOpen, onClose, technology, onStatusChange, onNotesChange }) {
+function TechnologyModal({ isOpen, onClose, technology, onStatusChange, onNotesChange, onDelete }) {
+  const [localNotes, setLocalNotes] = useState('');
+  useEffect(() => {
+    if (technology) {
+      setLocalNotes(technology.notes || '');
+    }
+  }, [technology]);
   if (!technology) {
     return null;
   }
-
   const getStatusClass = (status) => {
     const classes = {
       'completed': 'success',
@@ -16,7 +22,6 @@ function TechnologyModal({ isOpen, onClose, technology, onStatusChange, onNotesC
     };
     return classes[status] || 'info';
   };
-
   const getStatusText = (status) => {
     const texts = {
       'completed': 'Завершено',
@@ -25,24 +30,28 @@ function TechnologyModal({ isOpen, onClose, technology, onStatusChange, onNotesC
     };
     return texts[status] || status;
   };
-
   const getStatusColor = (status) => {
     const colors = {
-      'completed': '#4CAF50',
-      'in-progress': '#FFC107',
-      'not-started': '#F44336'
+      'completed': 'var(--success-color)',
+      'in-progress': 'var(--warning-color)',
+      'not-started': 'var(--error-color)'
     };
-    return colors[status] || '#9E9E9E';
+    return colors[status] || 'var(--gray-dark)';
   };
-
   const handleStatusChange = (newStatus) => {
     onStatusChange(technology.id, newStatus);
   };
-
-  const handleNotesChange = (notes) => {
-    onNotesChange(technology.id, notes);
+  const handleNotesChange = (techId, notes) => {
+    setLocalNotes(notes);
+    if (typeof onNotesChange === 'function') {
+      onNotesChange(techId, notes);
+    }
   };
-
+  const handleDelete = () => {
+    if (onDelete && onDelete(technology.id)) {
+      onClose();
+    }
+  };
   const getTechProgress = () => {
     const progressMap = {
       'completed': 100,
@@ -51,11 +60,10 @@ function TechnologyModal({ isOpen, onClose, technology, onStatusChange, onNotesC
     };
     return progressMap[technology.status] || 0;
   };
-
   const statusButtons = [
-    { id: 'not-started', label: 'Не начато', color: '#F44336' },
-    { id: 'in-progress', label: 'В процессе', color: '#FFC107' },
-    { id: 'completed', label: 'Завершено', color: '#4CAF50' }
+    { id: 'not-started', label: 'Не начато', color: 'var(--error-color)' },
+    { id: 'in-progress', label: 'В процессе', color: 'var(--warning-color)' },
+    { id: 'completed', label: 'Завершено', color: 'var(--success-color)' }
   ];
 
   return (
@@ -70,9 +78,7 @@ function TechnologyModal({ isOpen, onClose, technology, onStatusChange, onNotesC
               </span>
             </div>
           </div>
-          
           <p className="modal-tech-description">{technology.description}</p>
-
           <div className="modal-status-selector">
             <h4>Изменить статус:</h4>
             <div className="modal-status-buttons">
@@ -88,15 +94,13 @@ function TechnologyModal({ isOpen, onClose, technology, onStatusChange, onNotesC
               ))}
             </div>
           </div>
-
           <div className="modal-notes-section">
             <TechnologyNotes
               techId={technology.id}
-              notes={technology.notes || ''}
+              notes={localNotes}
               onNotesChange={handleNotesChange}
             />
           </div>
-
           <div className="modal-progress-section">
             <ProgressBar
               progress={getTechProgress()}
@@ -106,6 +110,15 @@ function TechnologyModal({ isOpen, onClose, technology, onStatusChange, onNotesC
               showPercentage={true}
               animated={true}
             />
+          </div>
+          <div className="modal-actions">
+            <button 
+              className="btn btn-error"
+              onClick={handleDelete}
+              style={{ marginTop: '20px' }}
+            >
+               Удалить технологию
+            </button>
           </div>
         </div>
       </div>

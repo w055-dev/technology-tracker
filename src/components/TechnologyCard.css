@@ -17,7 +17,7 @@
   padding: var(--spacing-lg);
   border-radius: var(--border-radius-md);
   border-left: 4px solid var(--gray-dark);
-  background-color: #f9f9f9;
+  background-color: var(--bg-secondary);
   display: flex;
   justify-content: space-between;
   align-items: flex-start;
@@ -57,17 +57,17 @@
 
 .technology-list li.completed {
   border-left-color: var(--success-color);
-  background-color: #f1f8f4;
+  background-color: rgba(5, 150, 105, 0.1);
 }
 
 .technology-list li.in-progress {
   border-left-color: var(--warning-color);
-  background-color: #fff8f0;
+  background-color: rgba(248, 150, 30, 0.1);
 }
 
 .technology-list li.not-started {
   border-left-color: var(--gray-dark);
-  background-color: #fafafa;
+  background-color: rgba(237, 242, 247, 0.5);
 }
 
 .filter-tabs {
@@ -89,6 +89,9 @@
   padding: var(--spacing-md) var(--spacing-lg);
   border: 2px solid var(--gray-medium);
   border-radius: var(--border-radius-md);
+  background-color: var(--bg-tertiary);
+  border-color: var(--border-color);
+  color: var(--text-primary);
   font-size: 16px;
   transition: all var(--transition-normal);
 }
@@ -145,6 +148,66 @@
   font-size: 20px;
   flex-shrink: 0;
   margin-left: var(--spacing-sm);
+}
+
+[data-theme="dark"] .technology-list h2 {
+  color: var(--text-primary);
+}
+
+[data-theme="dark"] .technology-list li {
+  background-color: var(--bg-card);
+  border-left-color: var(--gray-dark);
+}
+
+[data-theme="dark"] .technology-list li.completed {
+  background-color: rgba(5, 150, 105, 0.1);
+  border-left-color: var(--success-dark);
+}
+
+[data-theme="dark"] .technology-list li.in-progress {
+  background-color: rgba(248, 150, 30, 0.1);
+  border-left-color: var(--warning-dark);
+}
+
+[data-theme="dark"] .technology-list li.not-started {
+  background-color: rgba(55, 65, 81, 0.3);
+  border-left-color: var(--gray-dark);
+}
+
+[data-theme="dark"] .technology-list li.expanded {
+  background-color: var(--bg-card);
+}
+
+[data-theme="dark"] .tech-title {
+  color: var(--text-primary);
+}
+
+[data-theme="dark"] .tech-description {
+  color: var(--text-secondary);
+}
+
+[data-theme="dark"] .search-box input {
+  background-color: var(--bg-tertiary);
+  border-color: var(--border-color);
+  color: var(--text-primary);
+}
+
+[data-theme="dark"] .search-box input:focus {
+  border-color: var(--info-dark);
+  box-shadow: 0 0 0 3px rgba(96, 165, 250, 0.1);
+}
+
+[data-theme="dark"] .tech-category {
+  background-color: var(--info-light);
+  color: var(--info-dark);
+}
+
+[data-theme="dark"] .empty-state p {
+  color: var(--text-secondary);
+}
+
+[data-theme="dark"] .notes-toggle-btn:hover {
+  background-color: rgba(255, 255, 255, 0.1);
 }
 
 /* Мобильная адаптация */

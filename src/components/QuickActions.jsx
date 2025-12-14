@@ -80,7 +80,7 @@ function QuickActions({ technologies, onMarkAllCompleted, onResetAll }) {
         </button>
 
         <button
-          className="btn btn-purple"
+          className="btn btn-export"
           onClick={handleExport}
           title="Экспортировать данные в JSON-файл"
         >
@@ -94,7 +94,7 @@ function QuickActions({ technologies, onMarkAllCompleted, onResetAll }) {
         title="Экспорт данных"
       >
         <div className="export-modal-content">
-          <p className="success-message">✅ Данные успешно экспортированы!</p>
+          <p className="success-message">Данные успешно экспортированы!</p>
           <p>Файл с вашими данными был загружен на ваш компьютер.</p>
           <p className="file-info">
             <strong>Формат файла:</strong> JSON<br />

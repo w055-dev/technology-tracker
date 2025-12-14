@@ -14,7 +14,6 @@ const initialTechnologies = [
 
 const useTechnologies = () => {
   const [technologies, setTechnologies] = useLocalStorage('technologies', initialTechnologies);
-
   const updateStatus = (techId, newStatus) => {
     setTechnologies(prev =>
       prev.map(tech =>
@@ -22,7 +21,6 @@ const useTechnologies = () => {
       )
     );
   };
-
   const updateNotes = (techId, newNotes) => {
     setTechnologies(prev =>
       prev.map(tech =>
@@ -30,7 +28,22 @@ const useTechnologies = () => {
       )
     );
   };
-
+  const deleteTechnology = (techId) => {
+    if (window.confirm('Вы уверены, что хотите удалить эту технологию?')) {
+      setTechnologies(prev => prev.filter(tech => tech.id !== techId));
+      return true;
+    }
+    return false;
+  };
+  const addTechnology = (newTech) => {
+    const techWithId = {
+      ...newTech,
+      id: Date.now(),
+      createdAt: new Date().toISOString()
+    };
+    setTechnologies(prev => [...prev, techWithId]);
+    return techWithId;
+  };
   const markAllAsCompleted = () => {
     setTechnologies(prev =>
       prev.map(tech => ({
@@ -39,7 +52,6 @@ const useTechnologies = () => {
       }))
     );
   };
-
   const resetAllStatuses = () => {
     setTechnologies(prev =>
       prev.map(tech => ({
@@ -48,7 +60,6 @@ const useTechnologies = () => {
       }))
     );
   };
-
   const calculateProgress = () => {
     if (technologies.length === 0){
       return 0;
@@ -59,8 +70,11 @@ const useTechnologies = () => {
 
   return {
     technologies,
+    setTechnologies,
     updateStatus,
     updateNotes,
+    deleteTechnology,
+    addTechnology,
     markAllAsCompleted,
     resetAllStatuses,
     calculateProgress
