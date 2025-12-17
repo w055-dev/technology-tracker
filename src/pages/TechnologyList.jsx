@@ -49,6 +49,13 @@ function TechnologyList() {
     setShowImporter(false);
   };
   const handleTechClick = (tech) => {
+    const statusOrder = {
+    'not-started': 'in-progress',
+    'in-progress': 'completed',
+    'completed': 'not-started'
+  };
+    const newStatus = statusOrder[tech.status] || 'not-started';
+    updateStatus(tech.id, newStatus);
     setSelectedTech(tech);
     setIsModalOpen(true);
   };
@@ -127,6 +134,7 @@ function TechnologyList() {
           searchQuery={searchQuery}
           setSearchQuery={setSearchQuery}
           updateTechnologyNotes={updateNotes}
+          updateStatus={updateStatus}
           onTechClick={handleTechClick}
         />
       </div>

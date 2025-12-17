@@ -5,6 +5,13 @@ function DeadlineManager({ technologies, onUpdateDeadline }) {
   const [newDeadline, setNewDeadline] = useState('');
   const [deadlineError, setDeadlineError] = useState('');
 
+  const getMaxDate = () => {
+    const today = new Date();
+    const maxDate = new Date();
+    maxDate.setFullYear(today.getFullYear() + 10);
+    return maxDate.toISOString().split('T')[0];
+  };
+
   const validateDeadline = (dateString) => {
     if (!dateString.trim()) {
       setDeadlineError('Дата обязательна');
@@ -17,6 +24,15 @@ function DeadlineManager({ technologies, onUpdateDeadline }) {
     
     if (deadlineDate < today) {
       setDeadlineError('Дедлайн не может быть в прошлом');
+      return false;
+    }
+    
+    const maxDate = new Date();
+    maxDate.setFullYear(today.getFullYear() + 10);
+    maxDate.setHours(23, 59, 59, 999);
+    
+    if (deadlineDate > maxDate) {
+      setDeadlineError('Дедлайн не может быть более чем на 10 лет');
       return false;
     }
     
@@ -35,14 +51,37 @@ function DeadlineManager({ technologies, onUpdateDeadline }) {
     setNewDeadline('');
   };
 
+  const getDeadlineStatus = (deadline) => {
+    if (!deadline) return '';
+    
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+    const deadlineDate = new Date(deadline);
+    deadlineDate.setHours(0, 0, 0, 0);
+    
+    const diffTime = deadlineDate - today;
+    const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+    
+    if (diffDays < 0){
+      return 'overdue';
+    }
+    if (diffDays === 0){
+      return 'today';
+    }
+    if (diffDays <= 3){
+      return 'soon';
+    }
+    return '';
+  };
+
   return (
     <div className="deadline-manager" role="region" aria-label="Управление дедлайнами">
-      <h3> Установка сроков изучения</h3>
+      <h3>Установка сроков изучения</h3>
       
       <div className="deadline-form">
         <div className="form-group">
           <label htmlFor="deadline-input">
-            Выберите дату дедлайна *
+            Выберите дату дедлайна
             <span className="required-asterisk" aria-hidden="true"> *</span>
           </label>
           <input
@@ -54,6 +93,7 @@ function DeadlineManager({ technologies, onUpdateDeadline }) {
               validateDeadline(e.target.value);
             }}
             min={new Date().toISOString().split('T')[0]}
+            max={getMaxDate()}
             aria-required="true"
             aria-invalid={!!deadlineError}
             aria-describedby={deadlineError ? "deadline-error" : "deadline-help"}
@@ -65,7 +105,7 @@ function DeadlineManager({ technologies, onUpdateDeadline }) {
             </span>
           )}
           <p id="deadline-help" className="help-text">
-            Установите дату, к которой должна быть изучена технология
+            Установите дату, к которой должна быть изучена технология (максимум 10 лет вперед)
           </p>
         </div>
 
@@ -88,8 +128,8 @@ function DeadlineManager({ technologies, onUpdateDeadline }) {
                     aria-label={`Выбрать ${tech.title} для установки дедлайна`}
                   />
                   <span className="tech-title">{tech.title}</span>
-                  <span className="tech-deadline">
-                    {tech.deadline ? `(текущий: ${new Date(tech.deadline).toLocaleDateString('ru-RU')})` : '(нет дедлайна)'}
+                  <span className={`deadline-indicator ${getDeadlineStatus(tech.deadline)}`}>
+                    {tech.deadline ? `(${new Date(tech.deadline).toLocaleDateString('ru-RU')})` : ''}
                   </span>
                 </label>
               </div>
@@ -109,4 +149,5 @@ function DeadlineManager({ technologies, onUpdateDeadline }) {
     </div>
   );
 }
-export default DeadlineManager
+
+export default DeadlineManager;

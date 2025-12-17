@@ -42,7 +42,14 @@ function TechnologyModal({
       setDeadlineError('Дедлайн не может быть в прошлом');
       return false;
     }
+    const maxDate = new Date();
+    maxDate.setFullYear(today.getFullYear() + 10);
+    maxDate.setHours(23, 59, 59, 999);
     
+    if (deadlineDate > maxDate) {
+      setDeadlineError('Дедлайн не может быть более чем через 10 лет');
+      return false;
+    }
     setDeadlineError('');
     return true;
   };

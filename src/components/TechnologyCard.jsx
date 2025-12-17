@@ -2,7 +2,7 @@ import './TechnologyCard.css';
 import { useState } from 'react';
 import TechnologyNotes from './TechnologyNotes';
 
-function TechnologyCard({ technologies, searchQuery = '', setSearchQuery, updateTechnologyNotes, onTechClick }) {
+function TechnologyCard({ technologies, searchQuery = '', setSearchQuery, updateTechnologyNotes, onTechClick, updateStatus }) {
   const [activeFilter, setActiveFilter] = useState('all');
   const [expandedTechId, setExpandedTechId] = useState(null);
   const [localSearchQuery, setLocalSearchQuery] = useState(searchQuery);
@@ -10,6 +10,23 @@ function TechnologyCard({ technologies, searchQuery = '', setSearchQuery, update
   const toggleNotes = (id, event) => {
     event.stopPropagation();
     setExpandedTechId(expandedTechId === id ? null : id);
+  };
+  const handleCardClick = (tech, event) => {
+    if (event.target.closest('.notes-toggle-btn')) {
+      return;
+    }
+    if (typeof onTechClick === 'function') {
+      onTechClick(tech);
+    }
+    else if (typeof updateStatus === 'function') {
+      const statusOrder = {
+        'not-started': 'in-progress',
+        'in-progress': 'completed',
+        'completed': 'not-started'
+      };
+      const newStatus = statusOrder[tech.status] || 'not-started';
+      updateStatus(tech.id, newStatus);
+    }
   };
   
   const handleSearchChange = (e) => {
@@ -36,9 +53,15 @@ function TechnologyCard({ technologies, searchQuery = '', setSearchQuery, update
     deadlineDate.setHours(0, 0, 0, 0);
     const diffTime = deadlineDate - today;
     const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
-    if (diffDays < 0) return 'overdue';
-    if (diffDays === 0) return 'today';
-    if (diffDays <= 3) return 'soon';
+    if (diffDays < 0){
+      return 'overdue';
+    }
+    if (diffDays === 0){
+      return 'today';
+    }
+    if (diffDays <= 3){
+      return 'soon';
+    }
     return 'normal';
   };
   
@@ -98,13 +121,13 @@ function TechnologyCard({ technologies, searchQuery = '', setSearchQuery, update
               key={tech.id}
               data-tech-id={tech.id}
               className={`tech-card ${tech.status} ${expandedTechId === tech.id ? 'expanded' : ''}`}
-              onClick={() => onTechClick(tech)}
+              onClick={(e) => handleCardClick(tech, e)}
               role="button"
               tabIndex="0"
               onKeyDown={(e) => {
                 if (e.key === 'Enter' || e.key === ' ') {
                   e.preventDefault();
-                  onTechClick(tech);
+                  handleCardClick(tech, e);
                 }
               }}
               aria-label={`Технология: ${tech.title}, статус: ${tech.status}`}
