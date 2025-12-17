@@ -19,16 +19,6 @@ function Settings() {
     document.body.setAttribute('data-theme', newTheme);
   };
 
-  // Функция сброса настроек
-  const handleResetSettings = () => {
-    if (window.confirm('Вы уверены, что хотите сбросить все настройки к значениям по умолчанию?')) {
-      localStorage.removeItem('theme');
-      setTheme('light');
-      document.body.setAttribute('data-theme', 'light');
-      alert('Настройки сброшены!');
-    }
-  };
-
   return (
     <div className="page">
       <div className="page-header">

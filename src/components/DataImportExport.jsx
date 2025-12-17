@@ -148,13 +148,14 @@ function DataImportExport({onImport}) {
             style={{ display: 'none' }}
           />
         </label>
-        <button 
+        <button className='btn btn-secondary'
           onClick={saveToLocalStorage} 
           disabled={technologies.length === 0}
         >
           Сохранить в localStorage
         </button>
-        <button onClick={loadFromLocalStorage}>
+        <button className='btn btn-secondary' 
+          onClick={loadFromLocalStorage}>
           Загрузить из localStorage
         </button>
       </div>
