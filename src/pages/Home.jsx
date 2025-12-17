@@ -4,7 +4,7 @@ function Home() {
   return (
     <div className="page">
       <div className="page-header">
-        <h1>🚀 Добро пожаловать в Трекер технологий!</h1>
+        <h1> Добро пожаловать в Трекер технологий!</h1>
       </div>
 
       <div className="features-grid">

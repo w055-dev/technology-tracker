@@ -2,14 +2,14 @@ import { useState, useEffect } from 'react';
 import useLocalStorage from './useLocalStorage';
 
 const initialTechnologies = [
-  { id: 1, title: 'React Components', description: 'Изучение базовых компонентов', status: 'completed', category: 'Frontend', notes: '' },
-  { id: 2, title: 'JSX Syntax', description: 'Освоение синтаксиса JSX', status: 'in-progress', category: 'Frontend', notes: '' },
-  { id: 3, title: 'State Management', description: 'Работа с состоянием компонентов', status: 'in-progress', category: 'Frontend', notes: '' },
-  { id: 4, title: 'Promise API', description: 'Работа с промисами', status: 'completed', category: 'Core Languages', notes: '' },
-  { id: 5, title: 'Responsive Design', description: 'Адаптивный дизайн', status: 'completed', category: 'Styling', notes: '' },
-  { id: 6, title: 'Node.js Basics', description: 'Введение в Node.js', status: 'in-progress', category: 'Backend', notes: '' },
-  { id: 7, title: 'MongoDB', description: 'Работа с базой данных', status: 'not-started', category: 'Backend', notes: '' },
-  { id: 8, title: 'GitHub', description: 'Работа с GitHub', status: 'completed', category: 'Tools', notes: '' },
+  { id: 1, title: 'React Components', description: 'Изучение базовых компонентов', status: 'completed', category: 'Frontend', notes: '', deadline: '25.12.2025'},
+  { id: 2, title: 'JSX Syntax', description: 'Освоение синтаксиса JSX', status: 'completed', category: 'Frontend', notes: '', deadline: '2025-10-10'},
+  { id: 3, title: 'State Management', description: 'Работа с состоянием компонентов', status: 'completed', category: 'Frontend', notes: '', deadline: '2025-11-11'},
+  { id: 4, title: 'Promise API', description: 'Работа с промисами', status: 'in-progress', category: 'Core Languages', notes: '', deadline: '2025-12-26'},
+  { id: 5, title: 'Responsive Design', description: 'Адаптивный дизайн', status: 'completed', category: 'Styling', notes: '', deadline: '2025-09-25'},
+  { id: 6, title: 'Node.js Basics', description: 'Введение в Node.js', status: 'in-progress', category: 'Backend', notes: '', deadline: '2025-12-30'},
+  { id: 7, title: 'MongoDB', description: 'Работа с базой данных', status: 'not-started', category: 'Backend', notes: '', deadline: '2026-02-02'},
+  { id: 8, title: 'GitHub', description: 'Работа с GitHub', status: 'completed', category: 'Tools', notes: '', deadline: '2025-09-21'},
 ];
 
 const useTechnologies = () => {
@@ -25,6 +25,13 @@ const useTechnologies = () => {
     setTechnologies(prev =>
       prev.map(tech =>
         tech.id === techId ? { ...tech, notes: newNotes } : tech
+      )
+    );
+  };
+  const updateDeadline = (techId, newDeadline) => {
+    setTechnologies(prev =>
+      prev.map(tech =>
+        tech.id === techId ? { ...tech, deadline: newDeadline } : tech
       )
     );
   };
@@ -59,6 +66,7 @@ const useTechnologies = () => {
         status: 'not-started'
       }))
     );
+    return true;
   };
   const calculateProgress = () => {
     if (technologies.length === 0){
@@ -77,7 +85,8 @@ const useTechnologies = () => {
     addTechnology,
     markAllAsCompleted,
     resetAllStatuses,
-    calculateProgress
+    calculateProgress,
+    updateDeadline
   };
 };
 

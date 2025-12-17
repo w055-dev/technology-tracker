@@ -7,6 +7,7 @@ import TechnologyList from './pages/TechnologyList';
 import AddTechnology from './pages/AddTechnology';
 import Login from './pages/Login';
 import Admin from './pages/Admin';
+import SetDeadlines from './pages/SetDeadlines';
 import ProtectedRoute from './components/ProtectedRoute';
 import Navigation from './components/Navigation';
 import './App.css';
@@ -42,6 +43,7 @@ function App() {
             <Route path="/settings" element={<Settings />} />
             <Route path="/technologies" element={<TechnologyList />} />
             <Route path="/add-technology" element={<AddTechnology />} />
+            <Route path="/set-deadlines" element={<SetDeadlines />} />
             <Route
               path="/login"
               element={<Login onLogin={handleLogin} />}

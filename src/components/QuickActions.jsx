@@ -1,33 +1,10 @@
 import './QuickActions.css';
 import { useState } from 'react';
-import Modal from './Modal';
+import { Link } from 'react-router-dom'
+import DataImportExport from './DataImportExport';
 
-function QuickActions({ technologies, onMarkAllCompleted, onResetAll }) {
-  const [showExportModal, setShowExportModal] = useState(false);
-  
-  const handleExport = () => {
-    const data = {
-      exportedAt: new Date().toISOString(),
-      version: '1.0',
-      totalTechnologies: technologies.length,
-      technologies: technologies
-    };
-    
-    const dataStr = JSON.stringify(data, null, 2);
-    const blob = new Blob([dataStr], { type: 'application/json' });
-    const url = URL.createObjectURL(blob);
-    
-    const link = document.createElement('a');
-    link.href = url;
-    link.download = `tech-tracker-export-${new Date().toISOString().split('T')[0]}.json`;
-    document.body.appendChild(link);
-    link.click();
-    document.body.removeChild(link);
-    URL.revokeObjectURL(url);
-    
-    setShowExportModal(true);
-  };
-
+function QuickActions({ technologies, onMarkAllCompleted, onResetAll, onUpdateDeadline, onImportData }) {
+  const [showImportExport, setShowImportExport] = useState(false);
   const selectRandomNextTechnology = () => {
     const notCompletedTechs = technologies.filter(
       tech => tech.status !== 'completed'
@@ -57,16 +34,36 @@ function QuickActions({ technologies, onMarkAllCompleted, onResetAll }) {
       <div className="actions-container">
         <button
           className="btn btn-success"
-          onClick={onMarkAllCompleted}
+          onClick={() => {
+            if (technologies.length === 0) {
+              alert('Нет технологий для изменения статуса');
+              return;
+            }
+            if (window.confirm(`Отметить все ${technologies.length} технологий как выполненные?`)) {
+              onMarkAllCompleted();
+            }
+          }}
           title="Отметить все технологии как выполненные"
+          disabled={technologies.length === 0}
+          aria-disabled={technologies.length === 0}
         >
           Отметить все как выполненные
         </button>
         
         <button
           className="btn btn-warning"
-          onClick={onResetAll}
+          onClick={() => {
+            if (technologies.length === 0) {
+              alert('Нет технологий для изменения статуса');
+              return;
+            }
+            if (window.confirm(`Сбросить статусы всех ${technologies.length} технологий?`)) {
+              onResetAll();
+            }
+          }}
           title="Сбросить все статусы на 'не начато'"
+          disabled={technologies.length === 0}
+          aria-disabled={technologies.length === 0}
         >
           Сбросить все статусы
         </button>
@@ -75,39 +72,36 @@ function QuickActions({ technologies, onMarkAllCompleted, onResetAll }) {
           className="btn btn-info"
           onClick={selectRandomNextTechnology}
           title="Случайный выбор следующей технологии для изучения"
+          disabled={technologies.length === 0}
+          aria-disabled={technologies.length === 0}
         >
           Случайный выбор
         </button>
 
         <button
-          className="btn btn-export"
-          onClick={handleExport}
-          title="Экспортировать данные в JSON-файл"
+          className="btn btn-import-export"
+          onClick={() => setShowImportExport(!showImportExport)}
+          title="Импорт/экспорт данных"
         >
-          Экспорт данных
+          {showImportExport ? 'Скрыть импорт/экспорт' : 'Импорт/экспорт'}
         </button>
+        
+        <Link
+          to="/set-deadlines"
+          className="btn btn-error"
+          title="Установить дедлайны"
+          disabled={technologies.length === 0}
+          aria-disabled={technologies.length === 0}
+        >
+          Установить дедлайны
+        </Link>
       </div>
-
-      <Modal
-        isOpen={showExportModal}
-        onClose={() => setShowExportModal(false)}
-        title="Экспорт данных"
-      >
-        <div className="export-modal-content">
-          <p className="success-message">Данные успешно экспортированы!</p>
-          <p>Файл с вашими данными был загружен на ваш компьютер.</p>
-          <p className="file-info">
-            <strong>Формат файла:</strong> JSON<br />
-            <strong>Содержит:</strong> {technologies.length} технологий
-          </p>
-          <button 
-            className="btn btn-primary"
-            onClick={() => setShowExportModal(false)}
-          >
-            Закрыть
-          </button>
+      
+      {showImportExport && (
+        <div className="import-export">
+          <DataImportExport onImport={onImportData} />
         </div>
-      </Modal>
+      )}
     </div>
   );
 }

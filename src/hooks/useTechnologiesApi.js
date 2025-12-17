@@ -48,6 +48,31 @@ const useTechnologiesApi = () => {
     setTechnologies(prev => prev.filter(tech => tech.id !== techId));
     return true;
   };
+  const updateDeadline = (techId, newDeadline) => {
+    setTechnologies(prev =>
+      prev.map(tech =>
+        tech.id === techId ? { ...tech, deadline: newDeadline } : tech
+      )
+    );
+  };
+  const markAllAsCompleted = () => {
+    setTechnologies(prev =>
+      prev.map(tech => ({
+        ...tech,
+        status: 'completed'
+      }))
+    );
+  };
+
+  const resetAllStatuses = () => {
+    setTechnologies(prev =>
+      prev.map(tech => ({
+        ...tech,
+        status: 'not-started'
+      }))
+    );
+  };
+
 
   return {
     technologies,
@@ -55,7 +80,10 @@ const useTechnologiesApi = () => {
     importTechnologies,
     updateStatus,
     updateNotes,
-    deleteTechnology
+    deleteTechnology,
+    updateDeadline,
+    markAllAsCompleted,
+    resetAllStatuses
   };
 };
 

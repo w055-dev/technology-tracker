@@ -6,7 +6,7 @@ import TechnologyModal from '../components/TechnologyModal';
 import TechnologySearch from '../components/TechnologySearch';
 import RoadmapImporter from '../components/RoadmapImporter';
 import useTechnologiesApi from '../hooks/useTechnologiesApi';
-
+import StatusEditor from '../components/StatusEditor';
 import './TechnologyList.css';
 
 function TechnologyList() {
@@ -16,6 +16,7 @@ function TechnologyList() {
     importTechnologies,
     updateStatus,
     updateNotes,
+    updateDeadline,
     deleteTechnology,
     markAllAsCompleted,
     resetAllStatuses
@@ -53,6 +54,9 @@ function TechnologyList() {
   };
   const handleDelete = (techId) => {
     return deleteTechnology(techId);
+  };
+  const handleImportData = (importedTechs) => {
+    importTechnologies(importedTechs);
   };
   const getCategory = (language) => {
     const map = {
@@ -108,8 +112,15 @@ function TechnologyList() {
           technologies={technologies}
           onMarkAllCompleted={markAllAsCompleted}
           onResetAll={resetAllStatuses}
+          onUpdateDeadline={updateDeadline}
+          onImportData={handleImportData}
+        />
+        <StatusEditor 
+          technologies={technologies}
+          onUpdateStatus={updateStatus}
         />
       </div>
+      
       <div className="technology-list-main">
         <TechnologyCard 
           technologies={technologies}
@@ -128,6 +139,7 @@ function TechnologyList() {
         technology={selectedTech}
         onStatusChange={updateStatus}
         onNotesChange={updateNotes}
+        onDeadlineChange={updateDeadline}
         onDelete={handleDelete}
       />
     </div>

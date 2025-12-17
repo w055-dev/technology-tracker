@@ -79,8 +79,6 @@
   color: var(--warning-color);
 }
 
-
-
 @media (max-width: 1024px) {
   .technology-list-container {
     grid-template-columns: 1fr;

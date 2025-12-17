@@ -150,6 +150,87 @@
   margin-left: var(--spacing-sm);
 }
 
+.tech-meta-left {
+  display: flex;
+  gap: var(--spacing-sm);
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.empty-state {
+  text-align: center;
+  padding: 40px;
+  background: var(--bg-card);
+  border-radius: var(--border-radius-lg);
+  margin-top: 20px;
+}
+
+.empty-state p {
+  margin-bottom: 20px;
+  color: var(--text-secondary);
+  font-size: 16px;
+}
+
+.deadline-badge {
+  padding: 2px 8px;
+  border-radius: 10px;
+  font-size: 11px;
+  font-weight: 500;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.deadline-badge.overdue {
+  background-color: rgba(239, 68, 68, 0.2);
+  color: var(--error-dark);
+  border: 1px solid var(--error-color);
+}
+
+.deadline-badge.today {
+  background-color: rgba(245, 158, 11, 0.2);
+  color: var(--warning-dark);
+  border: 1px solid var(--warning-color);
+}
+
+.deadline-badge.soon {
+  background-color: rgba(59, 130, 246, 0.2);
+  color: var(--info-dark);
+  border: 1px solid var(--info-color);
+}
+
+.deadline-badge.normal {
+  background-color: rgba(156, 163, 175, 0.2);
+  color: var(--text-secondary);
+  border: 1px solid var(--gray-medium);
+}
+
+.import-export-section {
+  margin-top: var(--spacing-lg);
+  border-top: 1px solid var(--border-color);
+  padding-top: var(--spacing-lg);
+}
+
+[data-theme="dark"] .deadline-badge.overdue {
+  background-color: rgba(239, 68, 68, 0.3);
+  color: var(--error-light);
+}
+
+[data-theme="dark"] .deadline-badge.today {
+  background-color: rgba(245, 158, 11, 0.3);
+  color: var(--warning-light);
+}
+
+[data-theme="dark"] .deadline-badge.soon {
+  background-color: rgba(59, 130, 246, 0.3);
+  color: var(--info-light);
+}
+
+[data-theme="dark"] .deadline-badge.normal {
+  background-color: rgba(156, 163, 175, 0.3);
+  color: var(--text-muted);
+}
+
 [data-theme="dark"] .technology-list h2 {
   color: var(--text-primary);
 }

@@ -11,12 +11,6 @@
   gap: var(--spacing-md);
 }
 
-.export-modal-content {
-  display: flex;
-  flex-direction: column;
-  gap: var(--spacing-md);
-}
-
 .success-message {
   color: var(--success-color);
   font-weight: 600;

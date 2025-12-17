@@ -1,0 +1,32 @@
+.set-deadlines-container {
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+.empty-state {
+  text-align: center;
+  padding: 40px;
+  background: var(--bg-card);
+  border-radius: var(--border-radius-lg);
+  margin-top: 20px;
+}
+
+.empty-state p {
+  margin-bottom: 20px;
+  color: var(--text-secondary);
+  font-size: 16px;
+}
+
+.form-actions {
+  margin-top: 30px;
+  display: flex;
+  justify-content: center;
+  padding-top: 20px;
+  border-top: 1px solid var(--border-color);
+}
+
+@media (max-width: 768px) {
+  .set-deadlines-container {
+    padding: 0 10px;
+  }
+}

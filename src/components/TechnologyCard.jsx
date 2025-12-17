@@ -15,13 +15,31 @@ function TechnologyCard({ technologies, searchQuery = '', setSearchQuery, update
   const handleSearchChange = (e) => {
     const value = e.target.value;
     setLocalSearchQuery(value);
-    // Использую setTimeout для debounce
     clearTimeout(window.searchTimeout);
     window.searchTimeout = setTimeout(() => {
       if (typeof setSearchQuery === 'function') {
         setSearchQuery(value);
       }
     }, 300);
+  };
+
+  const formatDeadline = (deadline) => {
+    if (!deadline) return '';
+    const date = new Date(deadline);
+    return date.toLocaleDateString('ru-RU');
+  };
+  const getDeadlineStatus = (deadline) => {
+    if (!deadline) return '';
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+    const deadlineDate = new Date(deadline);
+    deadlineDate.setHours(0, 0, 0, 0);
+    const diffTime = deadlineDate - today;
+    const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+    if (diffDays < 0) return 'overdue';
+    if (diffDays === 0) return 'today';
+    if (diffDays <= 3) return 'soon';
+    return 'normal';
   };
   
   const filteredTechnologies = technologies.filter(tech => {
@@ -51,6 +69,7 @@ function TechnologyCard({ technologies, searchQuery = '', setSearchQuery, update
               e.preventDefault();
             }
           }}
+          aria-label="Поиск технологий"
         />
         <span className="search-count">Найдено: {filteredTechnologies.length}</span>
       </div>
@@ -60,6 +79,7 @@ function TechnologyCard({ technologies, searchQuery = '', setSearchQuery, update
             key={filter}
             className={`btn btn-outline ${activeFilter === filter ? 'active' : ''}`}
             onClick={() => setActiveFilter(filter)}
+            aria-pressed={activeFilter === filter}
           >
             {filter === 'all' ? 'Все' : 
              filter === 'not-started' ? 'Не начатые' :
@@ -79,17 +99,34 @@ function TechnologyCard({ technologies, searchQuery = '', setSearchQuery, update
               data-tech-id={tech.id}
               className={`tech-card ${tech.status} ${expandedTechId === tech.id ? 'expanded' : ''}`}
               onClick={() => onTechClick(tech)}
+              role="button"
+              tabIndex="0"
+              onKeyDown={(e) => {
+                if (e.key === 'Enter' || e.key === ' ') {
+                  e.preventDefault();
+                  onTechClick(tech);
+                }
+              }}
+              aria-label={`Технология: ${tech.title}, статус: ${tech.status}`}
             >
               <div className="tech-info">
                 <span className="tech-title">{tech.title}</span>
                 <span className="tech-description">{tech.description}</span>
                 
                 <div className="tech-meta">
-                  <span className="tech-category">{tech.category}</span>
+                  <div className="tech-meta-left">
+                    <span className="tech-category">{tech.category}</span>
+                    {tech.deadline && (
+                      <span className={`deadline-badge ${getDeadlineStatus(tech.deadline)}`}>
+                        📅 {formatDeadline(tech.deadline)}
+                      </span>
+                    )}
+                  </div>
                   <button 
                     className="notes-toggle-btn"
                     onClick={(e) => toggleNotes(tech.id, e)}
                     title={expandedTechId === tech.id ? "Скрыть заметки" : "Показать заметки"}
+                    aria-label={expandedTechId === tech.id ? "Скрыть заметки" : "Показать заметки для " + tech.title}
                   >
                     {tech.notes ? '📝' : '📄'}
                   </button>
@@ -104,7 +141,7 @@ function TechnologyCard({ technologies, searchQuery = '', setSearchQuery, update
               </div>
               <div className="status-icon">
                 {tech.status === 'completed' ? '✅' : 
-                 tech.status === 'in-progress' ? '⏳' : '📋'}
+                 tech.status === 'in-progress' ? '⏳' : '❌'}
               </div>
             </li>
           ))}

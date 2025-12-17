@@ -194,7 +194,7 @@ body {
   color: var(--text-light);
 }
 
-.btn-export{
+.btn-import-export{
   background: var(--purple-color);
   color: var(--text-light);
 }
